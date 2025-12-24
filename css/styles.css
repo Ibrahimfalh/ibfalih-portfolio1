@@ -109,13 +109,94 @@ body {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, #4a4a4a 0%, #2a2a2a 100%);
+    background:
+        linear-gradient(135deg, #4a4a4a 0%, #2f2f2f 45%, #1c1c1c 100%),
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 35%),
+        radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 30%);
+    background-size: 200% 200%, auto, auto;
+    background-position: 0% 50%, 20% 20%, 80% 0%;
+    animation: heroGradient 12s ease-in-out infinite;
     color: white;
     padding: 120px 20px;
     text-align: center;
     min-height: 600px;
     display: flex;
     align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Soft breathing glow on the hero edges */
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: -8%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 35%, rgba(255, 255, 255, 0) 70%);
+    filter: blur(18px);
+    opacity: 0.6;
+    transform: scale(0.96);
+    animation: heroGlow 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero > * {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes heroGradient {
+    0% {
+        background-position: 0% 50%, 20% 20%, 80% 0%;
+    }
+    50% {
+        background-position: 100% 50%, 20% 20%, 80% 0%;
+    }
+    100% {
+        background-position: 0% 50%, 20% 20%, 80% 0%;
+    }
+}
+
+@keyframes heroGlow {
+    0% {
+        opacity: 0.5;
+        transform: scale(0.95);
+    }
+    50% {
+        opacity: 0.9;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 0.5;
+        transform: scale(0.95);
+    }
+}
+
+@keyframes buttonGlow {
+    0% {
+        opacity: 0.5;
+        transform: scale(0.9);
+    }
+    50% {
+        opacity: 0.9;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 0.5;
+        transform: scale(0.9);
+    }
+}
+
+@keyframes buttonGlowShadow {
+    0% {
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0.12);
+    }
+    50% {
+        box-shadow: 0 0 24px rgba(255, 255, 255, 0.35);
+    }
+    100% {
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0.12);
+    }
 }
 
 .hero-content h1 {
@@ -172,11 +253,34 @@ body {
 .btn-secondary {
     background: var(--accent-color);
     color: white;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 
 .btn-secondary:hover {
     background: var(--primary-color);
     box-shadow: 0 10px 25px rgba(35, 76, 106, 0.3);
+}
+
+/* Breathing glow for the contact email button */
+.contact .btn-secondary::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: 12px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0) 70%);
+    filter: blur(14px);
+    opacity: 0.6;
+    transform: scale(0.92);
+    animation: buttonGlow 3.5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.contact .btn-secondary {
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0.2);
+    animation: buttonGlowShadow 3.5s ease-in-out infinite;
 }
 
 .btn-sm {
