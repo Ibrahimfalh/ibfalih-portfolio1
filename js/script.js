@@ -133,6 +133,7 @@ class TicTacToeGame {
 
         this.state = ['', '', '', '', '', '', '', '', ''];
         this.gameActive = true;
+        this.playerTurn = true;
 
         this.winningConditions = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -220,28 +221,34 @@ class TicTacToeGame {
             this.infoDisplay.textContent = "It's a Draw!";
             this.gameActive = false;
         } else {
-            this.infoDisplay.textContent = 'Your Turn (X)';
+            this.infoDisplay.textContent = this.playerTurn ? 'Your Turn (X)' : 'AI is thinking...';
         }
     }
 
     handleCellClick(index) {
-        if (this.state[index] === '' && this.gameActive) {
-            this.state[index] = 'X';
-            this.updateDisplay();
+        if (!this.gameActive || !this.playerTurn || this.state[index] !== '') return;
 
-            if (this.gameActive) {
-                setTimeout(() => {
-                    const aiMove = this.getAIMove(this.state);
-                    this.state[aiMove] = 'O';
-                    this.updateDisplay();
-                }, 500);
+        this.state[index] = 'X';
+        this.playerTurn = false;
+        this.updateDisplay();
+
+        if (!this.gameActive) return;
+
+        setTimeout(() => {
+            if (!this.gameActive) return;
+            const aiMove = this.getAIMove(this.state);
+            if (aiMove !== undefined) {
+                this.state[aiMove] = 'O';
             }
-        }
+            this.playerTurn = true;
+            this.updateDisplay();
+        }, 500);
     }
 
     reset() {
         this.state = ['', '', '', '', '', '', '', '', ''];
         this.gameActive = true;
+        this.playerTurn = true;
         this.updateDisplay();
     }
 }
